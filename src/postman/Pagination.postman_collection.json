@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "d67ea14b-c025-48a1-90dc-0c411a417dfa",
+		"name": "Pagination",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34921731"
+	},
+	"item": [
+		{
+			"name": "Offset Based Pagination",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{pr_local}}/api/books/offset?page=1&limit=10",
+					"host": [
+						"{{pr_local}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"offset"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cursor Based Paginated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.status == \"OK\"){",
+							"    pm.collectionVariables.set('nextToken', pm.response.json().data.nextToken)",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{pr_local}}/api/books/cursor?limit=10&nextToken={{nextToken}}",
+					"host": [
+						"{{pr_local}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"cursor"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "nextToken",
+							"value": "{{nextToken}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cursor Based Arbitrary Paginated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.status == \"OK\"){",
+							"    pm.collectionVariables.set('nextTokenArbitrary', pm.response.json().data.nextToken)",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{pr_local}}/api/books/cursor/arbitrary?limit=10&nextToken={{nextTokenArbitrary}}",
+					"host": [
+						"{{pr_local}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"cursor",
+						"arbitrary"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "nextToken",
+							"value": "{{nextTokenArbitrary}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cursor Based Arbitrary Paginated Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": \"SELECT * FROM books ORDER BY published, id OFFSET 10 ROWS FETCH NEXT 0 ROWS ONLY;\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{pr_local}}/api/books/raw/query",
+					"host": [
+						"{{pr_local}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"raw",
+						"query"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "pr_local",
+			"value": "http://localhost:4002",
+			"type": "string"
+		},
+		{
+			"key": "nextToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "nextTokenArbitrary",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

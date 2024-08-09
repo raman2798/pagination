@@ -61,6 +61,7 @@ src/
  |--middlewares/        # All types of Middlewares (middleware layer)
  |--migrations/         # All types of Migrations
  |--models/             # All types of Models
+ |--postman/            # Postman collection
  |--routes/             # All types of Routes (routes layer)
  |--seeders/            # All types of Seeders
  |--services/           # All types of Services
