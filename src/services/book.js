@@ -1,4 +1,4 @@
-const { isEqual, size, get } = require('lodash');
+const { size, get } = require('lodash');
 const { Op } = require('sequelize');
 const { Book } = require('../models');
 
@@ -43,10 +43,23 @@ const fetchByCursorBasedPaginated = async (limit, nextToken) => {
 
   const bookLength = size(books);
 
-  if (isEqual(bookLength, limit)) {
+  if (bookLength === limit) {
     const lastBook = books[bookLength - 1];
 
-    newNextToken = get(lastBook, 'id');
+    const checkForMoreBooks = await fetchBooks({
+      whereClause: {
+        id: {
+          [Op.gt]: get(lastBook, 'id'),
+        },
+      },
+      orderClause,
+      limit: 1,
+    });
+
+    if (size(checkForMoreBooks) > 0) {
+      // There are more records, so set the nextToken
+      newNextToken = get(lastBook, 'id');
+    }
   }
 
   return {
@@ -97,10 +110,38 @@ const fetchByCursorBasedArbitraryPaginated = async (limit, nextToken) => {
 
   const bookLength = size(books);
 
-  if (isEqual(bookLength, limit)) {
+  if (bookLength === limit) {
     const lastBook = books[bookLength - 1];
 
-    newNextToken = `${get(lastBook, 'id')},${get(lastBook, 'published')}`;
+    const checkForMoreBooks = await fetchBooks({
+      whereClause: {
+        [Op.or]: [
+          {
+            published: {
+              [Op.gt]: get(lastBook, 'published'),
+            },
+          },
+          {
+            [Op.and]: [
+              {
+                published: get(lastBook, 'published'),
+              },
+              {
+                id: {
+                  [Op.gt]: get(lastBook, 'id'),
+                },
+              },
+            ],
+          },
+        ],
+      },
+      orderClause,
+      limit: 1,
+    });
+
+    if (size(checkForMoreBooks) > 0) {
+      newNextToken = `${get(lastBook, 'id')},${get(lastBook, 'published')}`;
+    }
   }
 
   return {
