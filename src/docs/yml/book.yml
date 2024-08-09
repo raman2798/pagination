@@ -27,7 +27,7 @@ paths:
         - Books
       description: Retrieves a list of books using cursor pagination
       parameters:
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/NextToken'
       responses:
         '200':
@@ -43,8 +43,32 @@ paths:
         - Books
       description: Retrieves a list of books using cursor pagination with an arbitrary token
       parameters:
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/NextToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/Successful'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  
+  /books/raw/query:
+    post:
+      summary: Execute a raw query to retrieve books
+      operationId: executeRawQuery
+      tags:
+        - Books
+      description: Executes a raw SQL query to retrieve books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: The SQL query to execute
+                  example: "SELECT * FROM books ORDER BY published, id OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;"
       responses:
         '200':
           $ref: '#/components/responses/Successful'

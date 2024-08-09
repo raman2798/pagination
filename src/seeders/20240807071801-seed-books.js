@@ -3,10 +3,16 @@
 const generateBooks = (num) => {
   const books = [];
 
+  const startYear = 2000;
+
+  const endYear = 2024;
+
   for (let i = 1; i <= num; i += 1) {
-    const year = 2000 + i;
-    const month = String((i % 12) + 1).padStart(2, '0'); // Ensure month is 2 digits
-    const day = String((i % 28) + 1).padStart(2, '0'); // Ensure day is 2 digits
+    const year = startYear + (Math.floor((i - 1) / 12) % (endYear - startYear + 1));
+
+    const month = String((i % 12) + 1).padStart(2, '0');
+
+    const day = String((i % 28) + 1).padStart(2, '0');
 
     books.push({
       title: `Book Title ${i}`,
@@ -20,7 +26,7 @@ const generateBooks = (num) => {
 
 module.exports = {
   up: async (queryInterface) => {
-    const books = generateBooks(100);
+    const books = generateBooks(1000000);
 
     await queryInterface.bulkInsert('books', books, {});
   },

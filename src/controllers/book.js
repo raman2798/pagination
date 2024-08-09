@@ -1,3 +1,5 @@
+const { QueryTypes } = require('sequelize');
+const { sequelize } = require('../models');
 const { bookService } = require('../services');
 const { transformErrorUtilities, transformResponseUtilities } = require('../utilities');
 
@@ -47,8 +49,23 @@ const fetchByCursorBasedArbitraryPaginatedHandler = async (req, res, next) => {
   }
 };
 
+const fetchByRawQueryHandler = async (req, res, next) => {
+  try {
+    const { query } = req.body;
+
+    const books = await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+    });
+
+    res.json(transformResponseUtilities({ data: books }));
+  } catch (error) {
+    next(transformErrorUtilities(error));
+  }
+};
+
 module.exports = {
   fetchByOffsetBasedPaginationHandler,
   fetchByCursorBasedPaginatedHandler,
   fetchByCursorBasedArbitraryPaginatedHandler,
+  fetchByRawQueryHandler
 };
