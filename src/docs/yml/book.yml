@@ -1,0 +1,52 @@
+tags:
+  - name: Books
+    description: API for managing books
+
+paths:
+  /books/offset:
+    get:
+      summary: List all books with offset pagination
+      operationId: listBooksOffset
+      tags:
+        - Books
+      description: Retrieves a list of books using offset pagination
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          $ref: '#/components/responses/Successful'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /books/cursor:
+    get:
+      summary: List all books with cursor pagination
+      operationId: listBooksCursor
+      tags:
+        - Books
+      description: Retrieves a list of books using cursor pagination
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/NextToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/Successful'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /books/cursor/arbitrary:
+    get:
+      summary: List all books with cursor pagination (arbitrary token)
+      operationId: listBooksCursorArbitrary
+      tags:
+        - Books
+      description: Retrieves a list of books using cursor pagination with an arbitrary token
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/NextToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/Successful'
+        '400':
+          $ref: '#/components/responses/BadRequest'

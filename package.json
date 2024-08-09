@@ -1,0 +1,64 @@
+{
+  "name": "pagination-service",
+  "version": "1.0.0",
+  "description": "Pagination Service",
+  "main": "src/index.js",
+  "private": true,
+  "engines": {
+    "node": "20.15.0",
+    "npm": "10.7.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "prepare": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
+    "seed": "npx sequelize-cli db:seed:all",
+    "seed:undo": "npx sequelize-cli db:seed:undo:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raman2798/pagination-service.git"
+  },
+  "keywords": [],
+  "author": "GKMIT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raman2798/pagination-service/issues"
+  },
+  "homepage": "https://github.com/raman2798/pagination-service#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "http-status": "^1.7.4",
+    "joi": "^17.11.0",
+    "lodash": "^4.17.21",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.33.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
+    "prettier": "3.0.3",
+    "sequelize-cli": "^6.6.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
