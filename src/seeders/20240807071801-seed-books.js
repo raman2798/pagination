@@ -26,7 +26,7 @@ const generateBooks = (num) => {
 
 module.exports = {
   up: async (queryInterface) => {
-    const books = generateBooks(1000000);
+    const books = generateBooks(20);
 
     await queryInterface.bulkInsert('books', books, {});
   },

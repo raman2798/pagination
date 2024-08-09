@@ -21,11 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       published: {
         type: DataTypes.DATEONLY,
         allowNull: false,
-        get() {
-          const rawValue = this.getDataValue('published');
-
-          return rawValue ? rawValue.toISOString().split('T')[0] : null;
-        },
       },
       averageRating: {
         type: DataTypes.FLOAT,
